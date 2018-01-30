@@ -12,6 +12,13 @@
 * [Tic Tac Toe Game](#tic-tac-toe-game)	
 * [Simon Game](#simon-game)
 
+## Back End Development
+* [Timestamp Microservice](#timestamp-microservice)
+* [Request Header Parser Microservice](#request-header-parser-microservice)
+* [URL Shortener Microservice](#url-shortener-microservice)
+* [Image Search Abstraction Layer](#image-search-abstraction-layer)
+* [File Metadata Microservice](#file-metadata-microservice)
+
 ## Details
 
 ## Front End Development
@@ -91,3 +98,37 @@
 * If I want to restart, I can hit a button to do so, and the game will return to a single step.
 * I can play in strict mode where if I get a button press wrong, it notifies me that I have done so, and the game restarts at a new random series of button presses.
 * I can win the game by getting a series of 20 steps correct. I am notified of my victory, then the game starts over.
+
+## Back End Development
+
+### Timestamp Microservice
+##### [Source](https://github.com/FR0ST1N/Camper/tree/master/Back%20End%20Development/Timestamp%20Microservice) | [Live](https://timestamp-njs.glitch.me/)
+##### User Stories
+* I can pass a string as a parameter, and it will check to see whether that string contains either a unix timestamp or a natural language date (example: January 1, 2016).
+* If it does, it returns both the Unix timestamp and the natural language form of that date.
+* If it does not contain a date or Unix timestamp, it returns null for those properties.
+
+### Request Header Parser Microservice
+##### [Source](https://github.com/FR0ST1N/Camper/tree/master/Back%20End%20Development/Request%20Header%20Parser%20Microservice) | [Live](https://header-parser-njs.glitch.me/)
+##### User Stories
+* I can get the IP address, language and operating system for my browser.
+
+### URL Shortener Microservice
+##### [Source](https://github.com/FR0ST1N/Camper/tree/master/Back%20End%20Development/URL%20Shortener%20Microservice) | [Live](https://url-shortener-njs.glitch.me/)
+##### User Stories
+* I can pass a URL as a parameter and I will receive a shortened URL in the JSON response.
+* If I pass an invalid URL that doesn't follow the valid http://www.example.com format, the JSON response will contain an error instead.
+* When I visit that shortened URL, it will redirect me to my original link.
+
+### Image Search Abstraction Layer
+##### [Source](https://github.com/FR0ST1N/Camper/tree/master/Back%20End%20Development/Image%20Search%20Abstraction%20Layer) | [Live](https://image-search-njs.glitch.me/)
+##### User Stories
+* I can get the image URLs, alt text and page urls for a set of images relating to a given search string.
+* I can paginate through the responses by adding a ?offset=2 parameter to the URL.
+* I can get a list of the most recently submitted search strings.
+
+### File Metadata Microservice
+##### [Source](https://github.com/FR0ST1N/Camper/tree/master/Back%20End%20Development/File%20Metadata%20Microservice) | [Live](https://file-metadata-njs.glitch.me/)
+##### User Stories
+* I can submit a FormData object that includes a file upload.
+* When I submit something, I will receive the file size in bytes within the JSON response

@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Voting App - Manage</title>
+    <meta name="description" content="freeCodeCamp Voting App">
+    <link id="favicon" rel="icon" href="https://glitch.com/edit/favicon-app.ico" type="image/x-icon">
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bulma/0.6.2/css/bulma.min.css">
+    <script defer src="https://use.fontawesome.com/releases/v5.0.0/js/all.js"></script>
+    <link rel="stylesheet" href="/style.css">
+  </head>
+  <body>
+    <nav class="navbar" role="navigation" aria-label="main navigation">
+    <div class="navbar-start">
+    <a class="navbar-item" href="https://voting-njs.glitch.me/">
+      <i class="fas fa-home fa-lg"></i> &nbsp; Home
+    </a>
+    <% if (auth) { %>
+    <div class="navbar-item has-dropdown is-hoverable">
+    <a class="navbar-link">
+      <i class="fas fa-chart-bar fa-lg"></i> &nbsp; My Polls
+    </a>
+    <div class="navbar-dropdown">
+      <a class="navbar-item" href="/user/new">
+        New
+      </a>
+      <a class="navbar-item" href="/user/manage">
+        Manage
+      </a>
+    </div>
+  </div>
+    <% } %>
+    </div>
+    <div class="navbar-end">
+      <% if (auth) { %>
+      <a class="navbar-item" href="/logout/twitter">
+        <i class="fas fa-sign-out-alt fa-lg"></i> &nbsp; Logout
+      </a>
+      <% } else { %>
+      <a class="navbar-item" href="/login/twitter">
+        <i class="fab fa-twitter fa-lg"></i> &nbsp; Sign in
+      </a>
+      <% } %>
+    </div>
+    </nav>
+    
+  <section class="hero is-info">
+  <div class="hero-body">
+    <div class="container">
+      <h1 class="title">
+        Manage
+      </h1>
+      <h2 class="subtitle">
+        <% if (auth) { %>
+          <%= '@' + userName %>
+        <% } %>
+      </h2>
+    </div>
+  </div>
+</section>
+    
+  <table class="table is-fullwidth">
+    <thead>
+     <th>Question</th>
+     <th>Created On</th>
+      <th>Action</th>
+    </thead>
+    <tbody><%for(var i=0;i<dbData.length;i++){%><tr><td><a href=<%= "/poll/"+dbData[i].link %> ><%= dbData[i].question %></a></td><td><%= new Date(dbData[i].date).toLocaleDateString() %></td><td><a href="<%='/user/delete/'+dbData[i].link%>"><i class="fas fa-trash-alt"></i></a></td></tr><%}%></tbody>
+  </table>
+
+    <!-- Your web-app is https, so your scripts need to be too -->
+    <script src="https://code.jquery.com/jquery-2.2.1.min.js"
+            integrity="sha256-gvQgAFzTH6trSrAWoH1iPo9Xc96QxSZ3feW6kem+O00="
+            crossorigin="anonymous"></script>
+</body>
+</html>

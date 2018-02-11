@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Voting App - <%= dbData[0].question %></title>
+    <meta name="description" content="freeCodeCamp Voting App">
+    <link id="favicon" rel="icon" href="https://glitch.com/edit/favicon-app.ico" type="image/x-icon">
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bulma/0.6.2/css/bulma.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.4.0/Chart.min.js"></script>
+    <script defer src="https://use.fontawesome.com/releases/v5.0.0/js/all.js"></script>
+    <link rel="stylesheet" href="/style.css">
+  </head>
+  <body>
+    <nav class="navbar" role="navigation" aria-label="main navigation">
+    <div class="navbar-start">
+    <a class="navbar-item" href="https://voting-njs.glitch.me/">
+      <i class="fas fa-home fa-lg"></i> &nbsp; Home
+    </a>
+    <% if (auth) { %>
+    <div class="navbar-item has-dropdown is-hoverable">
+    <a class="navbar-link">
+      <i class="fas fa-chart-bar fa-lg"></i> &nbsp; My Polls
+    </a>
+    <div class="navbar-dropdown">
+      <a class="navbar-item" href="/user/new">
+        New
+      </a>
+      <a class="navbar-item" href="/user/manage">
+        Manage
+      </a>
+    </div>
+  </div>
+    <% } %>
+    </div>
+    <div class="navbar-end">
+      <% if (auth) { %>
+      <a class="navbar-item" href="/logout/twitter">
+        <i class="fas fa-sign-out-alt fa-lg"></i> &nbsp; Logout
+      </a>
+      <% } else { %>
+      <a class="navbar-item" href="/login/twitter">
+        <i class="fab fa-twitter fa-lg"></i> &nbsp; Sign in
+      </a>
+      <% } %>
+    </div>
+    </nav>
+    
+  <section class="hero is-info">
+  <div class="hero-body">
+    <div class="container">
+      <h1 class="title">
+        <%= dbData[0].question %>
+      </h1>
+      <h2 class="subtitle">
+        <% if (auth) { %>
+          <%= '@' + userName %>
+        <% } %>
+      </h2>
+    </div>
+  </div>
+</section>
+<br>
+    
+<div class="columns">
+  <div class="column">
+    <canvas id="myChart" width="300" height="125"></canvas>
+  </div>
+  <div class="column">
+  <form action="<%= '/poll/submit-vote/'+dbData[0].link %>" method="post">
+  <div id="options">
+  <label class="label is-medium">Options</label>
+  <div class="select is-medium">
+  <select onchange="checkOption()" name="option_data_client" id="option_data_client">
+    <%var option_data = (dbData[0].options).split(',')%>
+    <%for(var i=0;i<option_data.length;i++){%>
+    <option value='<%=i%>'><%=option_data[i]%></option>
+    <%}%>
+    <% if (auth) { %>
+    <option value="add_custom_option">Add option</option>
+    <% } %>
+  </select>
+</div>
+    <button class="button is-link is-medium" type="submit">Submit</button>
+    <a target="_blank" class="button is-info is-medium" href="<%='https://twitter.com/intent/tweet?text='+dbData[0].question+' https://voting-njs.glitch.me/poll/'+dbData[0].link %>">
+    <span class="icon">
+      <i class="fab fa-twitter"></i>
+    </span>
+    <span>Share</span>
+  </a>
+    </div>
+    <br>
+  <div class="field" style="display: none" id="new_option_input">
+  <label class="label is-medium">New Option</label>
+  <div class="control is-medium">
+    <input class="input" type="text" placeholder="Option" name="new_option_input">
+  </div>
+  </div>
+    </form>
+  </div>
+</div>
+
+    <!-- Your web-app is https, so your scripts need to be too -->
+    <script src="https://code.jquery.com/jquery-2.2.1.min.js"
+            integrity="sha256-gvQgAFzTH6trSrAWoH1iPo9Xc96QxSZ3feW6kem+O00="
+            crossorigin="anonymous"></script>
+    <script src="/poll.js"></script>
+    <script>
+        var options = '<%=dbData[0].options%>'.split(',');
+        var votes = '<%=dbData[0].votes%>'.split(',');
+        for(var i=0;i<votes.length;i++){
+          votes[i] = parseInt(votes[i]);
+        }
+        var ctx = document.getElementById('myChart').getContext('2d');
+        var chart = new Chart(ctx, {
+        // The type of chart we want to create
+        type: 'pie',
+
+        // The data for our dataset
+        data: {
+            labels: options,
+            datasets: [{
+                label: '<%=dbData[0].question%>',
+                backgroundColor: 'hsl(204, 86%, 53%)',
+                data: votes,
+            }]
+        },
+
+        // Configuration options go here
+        options: {responsive: true}
+        });          
+     </script>
+</body>
+</html>

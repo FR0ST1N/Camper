@@ -1,0 +1,138 @@
+<!-- This is a static file -->
+<!-- served from your routes in server.js -->
+
+<!-- You might want to try something fancier: -->
+<!-- html/nunjucks docs: https://mozilla.github.io/nunjucks/ -->
+<!-- pug: https://pugjs.org/ -->
+<!-- haml: http://haml.info/ -->
+<!-- hbs(handlebars): http://handlebarsjs.com/ -->
+
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Nightlife Coordination App</title>
+    <meta name="description" content="Nightlife Coordination App">
+    <link id="favicon" rel="icon" href="https://glitch.com/edit/favicon-app.ico" type="image/x-icon">
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bulma/0.6.2/css/bulma.min.css">
+    <link rel="stylesheet" href="/style.css">
+    <script defer src="https://use.fontawesome.com/releases/v5.0.0/js/all.js"></script>
+  </head>
+  <body>
+    <nav class="navbar is-dark" role="navigation" aria-label="main navigation">
+    <div class="navbar-brand">
+    <button class="button navbar-burger is-dark" id="navbar-burger-id">
+      <span></span>
+      <span></span>
+      <span></span>
+    </button>
+    </div>
+    <div class="navbar-menu" id="navbar-menu-id">
+    <div class="navbar-start">
+    <%if(auth){%>
+      <div class="navbar-item">
+      <%='@'+userName%>
+      </div>
+    <%}else{%>
+      <a class="navbar-item" href="/login/twitter">
+    <i class="fab fa-twitter fa-lg"></i> &nbsp; Sign in
+      </a>
+    <%}%>
+    </div>
+    <% if (auth) { %>
+    <div class="navbar-end">
+      <a class="navbar-item" href="/logout/twitter">
+        <i class="fas fa-sign-out-alt fa-lg"></i> &nbsp; Logout
+      </a>
+      </div>
+      <% } %>
+    </div>
+</nav>
+<section class="hero is-dark">
+  <div class="hero-body">
+    <div class="container">
+      <h1 class="title">
+        Nightlife Coordination App
+      </h1>
+      <h2 class="subtitle">
+        See which restaurants are hoppin' tonight!
+      </h2>
+    </div>
+  </div>
+</section>
+    <br>
+    <form class="container is-fluid" action="/" method="post">
+  <div class="field">
+  <p class="control has-icons-right">
+    <input class="input is-rounded" type="text" placeholder="Location" name="locationQuery" value="<%=query%>" required>
+    <span class="icon is-small is-right">
+      <i class="fas fa-search" type="submit"></i>
+    </span>
+  </p>
+</div>
+  </form>
+    <br>
+    <div class="container is-fluid">
+      <%for(var i=0;i<apiData.length;i++){%>
+      <div class="box">
+  <article class="media">
+    <div class="media-content">
+      <div class="content">
+        <p>
+          <strong><%=apiData[i].name%></strong>&nbsp;<small><%=apiData[i].rating%></small>
+          <br>
+          <%=apiData[i].formatted_address%>
+        </p>
+      </div>
+      <nav class="level is-mobile">
+        <div class="level-left">
+          <div class="level-item">
+            <%=numGoing[i]%> Going 
+          </div>
+          <%if (auth && uId[i]) {%>
+          <a class="level-item" href=<%="/remove/"+apiData[i].place_id%>>
+            <span class="icon is-small"><i class="fas fa-minus-square"></i></span>
+          </a>
+          <%}else if (auth && uId[i] == false){%>
+          <a class="level-item" href=<%="/add/"+apiData[i].place_id%>>
+            <span class="icon is-small"><i class="fas fa-plus-square"></i></span>
+          </a>
+          <%}%>
+        </div>
+      </nav>
+    </div>
+  </article>
+</div>
+      <% } %>
+    </div>
+    <br>
+    <!-- Your web-app is https, so your scripts need to be too -->
+    <script src="https://code.jquery.com/jquery-2.2.1.min.js"
+            integrity="sha256-gvQgAFzTH6trSrAWoH1iPo9Xc96QxSZ3feW6kem+O00="
+            crossorigin="anonymous"></script>
+    <script>
+    // Close mobile & tablet menu on item click
+  $('.navbar-item').each(function(e) {
+    $(this).click(function(){
+      if($('#navbar-burger-id').hasClass('is-active')){
+        $('#navbar-burger-id').removeClass('is-active');
+        $('#navbar-menu-id').removeClass('is-active');
+      }
+    });
+  });
+
+  // Open or Close mobile & tablet menu
+  $('#navbar-burger-id').click(function () {
+    if($('#navbar-burger-id').hasClass('is-active')){
+      $('#navbar-burger-id').removeClass('is-active');
+      $('#navbar-menu-id').removeClass('is-active');
+    }else {
+      $('#navbar-burger-id').addClass('is-active');
+      $('#navbar-menu-id').addClass('is-active');
+    }
+  });
+    </script>
+  </body>
+</html>

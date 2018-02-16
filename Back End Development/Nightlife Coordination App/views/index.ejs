@@ -64,13 +64,13 @@
 </section>
     <br>
     <form class="container is-fluid" action="/" method="post">
-  <div class="field">
-  <p class="control has-icons-right">
+  <div class="field is-grouped">
+  <div class="control is-expanded">
     <input class="input is-rounded" type="text" placeholder="Location" name="locationQuery" value="<%=query%>" required>
-    <span class="icon is-small is-right">
-      <i class="fas fa-search" type="submit"></i>
-    </span>
-  </p>
+  </div>
+  <div class="control">
+    <button class="button is-rounded" type="submit"><i class="fas fa-search"></i></button>
+  </div>
 </div>
   </form>
     <br>

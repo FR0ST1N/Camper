@@ -1,0 +1,167 @@
+<!-- This is a static file -->
+<!-- served from your routes in server.js -->
+
+<!-- You might want to try something fancier: -->
+<!-- html/nunjucks docs: https://mozilla.github.io/nunjucks/ -->
+<!-- pug: https://pugjs.org/ -->
+<!-- haml: http://haml.info/ -->
+<!-- hbs(handlebars): http://handlebarsjs.com/ -->
+
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Stock Market</title>
+    <meta name="description" content="Chart the Stock Market">
+    <link id="favicon" rel="icon" href="https://glitch.com/edit/favicon-app.ico" type="image/x-icon">
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/skeleton/2.0.4/skeleton.min.css">
+    <link rel="stylesheet" href="/style.css">
+  </head>
+  <body>
+    <div class="container">
+    <div class="row">
+      <canvas id="myChart"></canvas>
+    </div>
+    <div class="row">
+      <form>
+        <div class="ten columns">
+          <input class="u-full-width" type="text" placeholder="Enter Stock Code (Eg: GOOGL)" id="stockInput">
+        </div>
+        <div class="two columns">
+          <input type="button" value="Submit" onclick="addStock()">
+        </div>
+      </form>   
+    </div>
+    <div class="row">
+      <table class="u-full-width" id="tab">
+        <thead>
+          <tr>
+            <th>Stock Code</th>
+            <th>Name</th>
+            <th>Action</th>
+          </tr>
+        </thead>
+        <tbody id="tableBody">
+        </tbody>
+      </table>
+    </div>
+  </div>
+    
+
+    <!-- Your web-app is https, so your scripts need to be too -->
+    <script src="https://code.jquery.com/jquery-2.2.1.min.js"
+            integrity="sha256-gvQgAFzTH6trSrAWoH1iPo9Xc96QxSZ3feW6kem+O00="
+            crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.1/Chart.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.0.4/socket.io.js"></script>
+    <script>
+      var socket = io.connect();
+      var ctx = document.getElementById("myChart");
+      var chart_date = [];
+      var dataset = [];
+      socket.on('stock', function (data) {
+        tableBuilder(data);
+        dataset = [];
+        drawChart([{label: 'Data',data: [0],borderColor: 'rgba(0,0,0,1)',backgroundColor: 'rgba(0,0,0,0)',borderWidth: 1}]);
+        for(var x=0;x<data.length;x++){
+          dataset.push({label: null,data: null,borderColor: 'rgba(0,0,0,1)',backgroundColor: 'rgba(0,0,0,0)',borderWidth: 1});
+        }
+        for(var y=0;y<data.length;y++){
+            requestAPI('https://api.iextrading.com/1.0/stock/'+(data[y].scode).toLowerCase()+'/chart/1m', data[y].scode, 1, y);
+        }
+      });
+      
+      function addStock(){
+        var stock_code = document.getElementById('stockInput').value;
+        document.getElementById('stockInput').value = '';
+        var rows = document.getElementById("tab").getElementsByTagName("tbody")[0].getElementsByTagName("tr").length;
+        if(rows >= 3){
+          alert("Cannot add more than 3 stocks. Remove one and try again.");
+        }else{
+          requestAPI('https://api.iextrading.com/1.0/stock/'+stock_code.toLowerCase()+'/company', stock_code, 0, 0);
+        }
+        
+      }
+      
+      function tableBuilder(data){
+        var table = document.getElementById("tableBody");
+        table.innerHTML = '';
+        for(var i=0;i<data.length;i++){
+          var row = table.insertRow(i);
+          var cell1 = row.insertCell(0);
+          var cell2 = row.insertCell(1);
+          var cell3 = row.insertCell(2);
+          cell1.innerHTML = data[i].scode;
+          cell2.innerHTML = data[i].sname;
+          cell3.innerHTML = '<a onclick="removeStock(&quot;'+data[i].scode+'&quot;)">Remove</a>';
+        }
+      }
+      
+      function chartData(cJSON,stockCode,num){
+        var cData = [];
+        for(var i=0;i<cJSON.length;i++){
+          cData[i] = parseFloat(cJSON[i].open);
+          if(chart_date.length <= i){
+            chart_date[i] = cJSON[i].date;
+          }
+        }
+        dataset[num].data = cData;
+        dataset[num].label = stockCode;
+        var verify_count = 0;
+        //console.log("Start");
+        for(var z=0;z<dataset.length;z++){
+          if(dataset[z].data != null){
+            //console.log("OK");
+            verify_count++;
+          }
+          if(verify_count == dataset.length){
+            //console.log("Draw Chart!");
+            drawChart(dataset);
+          }
+        }
+      }
+      
+      function requestAPI(linkAPI, stockCode, mode,num) {
+        var xmlHttp = new XMLHttpRequest();
+        xmlHttp.onreadystatechange = function() { 
+            if (xmlHttp.readyState == 4 && xmlHttp.status == 200) {
+                if(mode === 0){
+                   var dataJSON= JSON.parse(xmlHttp.responseText);
+                   var scode = dataJSON.symbol;
+                   var sname = dataJSON.companyName;
+                   socket.emit('add-stock', { "scode": scode, "sname": sname});
+                }else if(mode === 1){
+                    var dataJSON= JSON.parse(xmlHttp.responseText);
+                    chartData(dataJSON,stockCode,num);
+                    
+                }
+            }
+        }
+        xmlHttp.onloadend = function() {
+        if(xmlHttp.status == 404) 
+          alert("Invalid Stock Code.");
+        }
+        xmlHttp.open("GET", linkAPI, true);
+        xmlHttp.send(null);
+    }
+      
+    function removeStock(scode){
+      socket.emit('remove-stock', { "scode": scode });
+    }
+    
+    function drawChart(ds){
+      var myChart;
+      myChart = new Chart(ctx, {
+          type: 'line',
+          data: {
+              labels: chart_date,
+              datasets: ds
+          },
+        options: {responsive: true}
+      });
+    }
+    </script>
+  </body>
+</html>

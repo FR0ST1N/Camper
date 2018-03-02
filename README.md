@@ -18,6 +18,11 @@
 * [URL Shortener Microservice](#url-shortener-microservice)
 * [Image Search Abstraction Layer](#image-search-abstraction-layer)
 * [File Metadata Microservice](#file-metadata-microservice)
+* [Build a Voting App](#build-a-voting-app)
+* [Build a Nightlife Coordination App](#build-a-nightlife-coordination-app)
+* [Chart the Stock Market](#chart-the-stock-market)
+* [Manage a Book Trading Club](#manage-a-book-trading-club)
+* [Build a Pinterest Clone](#build-a-pinterest-clone)
 
 ## Details
 
@@ -101,6 +106,8 @@
 
 ## Back End Development
 
+### [Certificate](https://www.freecodecamp.org/fr0st1n/back-end-certification)
+
 ### Timestamp Microservice
 ##### [Source](https://github.com/FR0ST1N/Camper/tree/master/Back%20End%20Development/Timestamp%20Microservice) | [Live](https://timestamp-njs.glitch.me/)
 ##### User Stories
@@ -132,3 +139,49 @@
 ##### User Stories
 * I can submit a FormData object that includes a file upload.
 * When I submit something, I will receive the file size in bytes within the JSON response
+
+### Build a Voting App
+##### [Source](https://github.com/FR0ST1N/Camper/tree/master/Back%20End%20Development/Voting%20App) | [Live](https://voting-njs.glitch.me/)
+##### User Stories
+* As an authenticated user, I can keep my polls and come back later to access them.
+* As an authenticated user, I can share my polls with my friends.
+* As an authenticated user, I can see the aggregate results of my polls.
+* As an authenticated user, I can delete polls that I decide I don't want anymore.
+* As an authenticated user, I can create a poll with any number of possible items.
+* As an unauthenticated or authenticated user, I can see and vote on everyone's polls.
+* As an unauthenticated or authenticated user, I can see the results of polls in chart form.
+* As an authenticated user, if I don't like the options on a poll, I can create a new option.
+
+### Build a Nightlife Coordination App
+##### [Source](https://github.com/FR0ST1N/Camper/tree/master/Back%20End%20Development/Nightlife%20Coordination%20App) | [Live](https://nightlife-njs.glitch.me/)
+##### User Stories
+* As an unauthenticated user, I can view all bars in my area.
+* As an authenticated user, I can add myself to a bar to indicate I am going there tonight.
+* As an authenticated user, I can remove myself from a bar if I no longer want to go there.
+* As an unauthenticated user, when I login I should not have to search again.
+
+### Chart the Stock Market
+##### [Source](https://github.com/FR0ST1N/Camper/tree/master/Back%20End%20Development/Chart%20the%20Stock%20Market) | [Live](https://stockmarket-njs.glitch.me/)
+##### User Stories
+* I can view a graph displaying the recent trend lines for each added stock.
+* I can add new stocks by their symbol name.
+* I can remove stocks.
+* I can see changes in real-time when any other user adds or removes a stock. For this you will need to use Web Sockets.
+
+### Manage a Book Trading Club 
+##### [Source](https://github.com/FR0ST1N/Camper/tree/master/Back%20End%20Development/Book%20Trading%20Club) | [Live](https://booktrading-njs.glitch.me/)
+##### User Stories
+* I can view all books posted by every user.
+* I can add a new book.
+* I can update my settings to store my full name, city, and state.
+* I can propose a trade and wait for the other user to accept the trade.
+
+### Build a Pinterest Clone
+##### [Source](https://github.com/FR0ST1N/Camper/tree/master/Back%20End%20Development/Pinterest%20Clone) | [Live](https://pinterestclone-njs.glitch.me/)
+##### User Stories
+* As an unauthenticated user, I can login with Twitter.
+* As an authenticated user, I can link to images.
+* As an authenticated user, I can delete images that I've linked to.
+* As an authenticated user, I can see a Pinterest-style wall of all the images I've linked to.
+* As an unauthenticated user, I can browse other users' walls of images.
+* As an authenticated user, if I upload an image that is broken, it will be replaced by a placeholder image.

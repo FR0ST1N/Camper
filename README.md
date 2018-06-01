@@ -28,7 +28,7 @@
 
 ## Front End Development
 
-### [Certificate](https://www.freecodecamp.com/fr0st1n/front-end-certification)
+### [Certificate](https://www.freecodecamp.org/certification/fr0st1n/legacy-front-end)
 
 ### Tribute Page
 ##### [Link](https://codepen.io/FR0ST1N/full/RgaVZq/)
@@ -106,7 +106,7 @@
 
 ## Back End Development
 
-### [Certificate](https://www.freecodecamp.org/fr0st1n/back-end-certification)
+### [Certificate](https://www.freecodecamp.org/certification/fr0st1n/legacy-back-end)
 
 ### Timestamp Microservice
 ##### [Source](https://github.com/FR0ST1N/Camper/tree/master/Back%20End%20Development/Timestamp%20Microservice) | [Live](https://timestamp-njs.glitch.me/)

@@ -1,0 +1,61 @@
+<!-- This is a static file -->
+<!-- served from your routes in server.js -->
+
+<!-- You might want to try something fancier: -->
+<!-- html/nunjucks docs: https://mozilla.github.io/nunjucks/ -->
+<!-- pug: https://pugjs.org/ -->
+<!-- haml: http://haml.info/ -->
+<!-- hbs(handlebars): http://handlebarsjs.com/ -->
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>Exercise tracker</title>
+    <meta name="description" content="A cool thing made with Glitch">
+    <link id="favicon" rel="icon" href="https://glitch.com/edit/favicon-app.ico" type="image/x-icon">
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <!-- import the webpage's stylesheet -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/skeleton/2.0.4/skeleton.min.css">
+  </head>
+  <body>
+    <div class="container">
+      <div class="row"><h3 style="text-align: center;">Exercise tracker</h3></div>
+      <br>
+    <div class="row">
+      <div class="six columns"><h4>Create a New User
+</h4>
+        <form action="/new" method="post">
+      <input class="u-full-width" type="text" id="newUser" placeholder="Username" name="newUser">
+           <input class="button-primary" type="submit" value="Submit">
+        </form>
+      </div>
+      <div class="six columns"><h4>Add exercises
+</h4>
+        <form action="/add" method="post">
+          <input class="u-full-width" type="text" placeholder="uid*" id="uid" name="uid">
+          <input class="u-full-width" type="text" placeholder="description*" id="des" name="des">
+          <input class="u-full-width" type="text" placeholder="minutes*" id="minu" name="minu">
+          <input class="u-full-width" type="text" placeholder="yyyy-mm-dd" id="date" name="date">
+          <input class="button-primary" type="submit" value="Add">
+        </form>
+      </div>
+    </div>
+      <div class="row"><p>GET users's exercise log: GET /api/exercise/log?{userId}[&from][&to][&limit]</p><p>{ } = required, [ ] = optional
+
+</p><p>from, to = dates (yyyy-mm-dd); limit = number</p></div>
+    </div>
+    
+    
+    <!-- import the webpage's client-side javascript file -->
+    <script src="/client.js"></script>
+
+    <!-- include the Glitch button to show what the webpage is about and
+          to make it easier for folks to view source and remix -->
+    <div class="glitchButton" style="position:fixed;top:20px;right:20px;"></div>
+    <script src="https://button.glitch.me/button.js"></script>
+
+  </body>
+</html>
